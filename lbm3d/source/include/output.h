@@ -4,19 +4,19 @@
 #include <string>
 #include <typedefs.h>
 
-class Output{
-	
-	public:
-		
-		Output();
-														
-		~Output();
-		
-		void write_view(const std::string &fn, ScalarField::HostMirror data);
+class Output {
 
-		FILE* file;
-		
-		size_t frame = 0;
+public:
+
+  Output();
+
+  ~Output();
+
+  void write_view(const std::string &fn, ScalarField::HostMirror data);
+
+  FILE *file;
+
+  size_t frame = 0;
 
 };
 
