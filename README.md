@@ -16,6 +16,7 @@ git clone https://github.com/kokkos/kokkos.git
 To build the lbm3d executable
 ```bash
 cd ../lbm3d-kokkos/lbm3d
+mkdir release
 make -j
 ```
 ## lattice Boltzmann method
@@ -27,8 +28,8 @@ For an OpenMP build, the app is `lbm.host`. Similarly, `lbm.cuda` for a Cuda bui
 ## Validation
 As the name suggests, the lid driven cavity is an enclosed flow driven by the movement of a lid. Here, the lid velocity is set to only have the x-component. Below a critical Reynolds number, the flow is steady. Figures below compare the horizontal component of velocity at the vertical centerline for different Reynolds numbers (`Re = 100, 400, 1000`) against Jiang et al. (1994) least-square FEM results. The LBM simulations use a resolution of `126x126x126`.
 
-![re100](https://github.com/vasylivy/lbm3d-kokkos/tree/master/cavity3d/re100_128x128x128.png "Re=100")
-![re400](https://github.com/vasylivy/lbm3d-kokkos/tree/master/cavity3d/re400_128x128x128.png "Re=400")
+![re100](https://github.com/vasylivy/lbm3d-kokkos/blob/master/cavity3d/re100_128x128x128.png "Re=100")
+![re400](https://github.com/vasylivy/lbm3d-kokkos/blob/master/cavity3d/re400_128x128x128.png "Re=400")
 ![re1000](https://github.com/vasylivy/lbm3d-kokkos/blob/master/cavity3d/re1000_128x128x128.png "Re=1000")
 
 ## Performance
