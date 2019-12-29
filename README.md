@@ -1,5 +1,5 @@
 # lbm3d-kokkos
-## What is it?
+## Overview
 lbm3d-kokkos is a C++ weakly compressible fluid flow solver written for CPUs or GPUs. The app is built on top of Sandia National Lab's performance portable Kokkos library. The majority of the app was written while attending a Kokkos workshop hosted by ORNL in July of 2018. Boundary conditions are specific to the 3D lid driven cavity. If you want something else, feel free to modify/extend the code.
 ## Build
 ```bash
@@ -32,7 +32,7 @@ python3 ../scripts/plot.py "output" frame NX NY NZ umax cuda_flag reynolds "jian
 The `cuda_flag` is a 1 or 0 that indicates whether to use column-major (Cuda/Fortran) or row-major (C/C++) data format.
 
 ## Validation
-As the name suggests, the lid driven cavity is an enclosed flow driven by the movement of a lid. Here, the lid velocity is set to only have the x-component. Below a critical Reynolds number, the flow is steady. Figures below compare the horizontal component of velocity at the vertical centerline for different Reynolds numbers (`Re = 100, 400, 1000`) against Jiang et al. (1994) least-square FEM results. The LBM simulations use a resolution of `126x126x126`.
+As the name suggests, the lid driven cavity is an enclosed flow driven by the movement of a lid. Here, the lid velocity is set to only have the x-component. Below a critical Reynolds number, the flow is steady. Figures below compare the horizontal component of velocity at the vertical centerline for different Reynolds numbers (`Re = 100, 400, 1000`) against Jiang et al. (1994) least-square FEM results. The LBM simulations use a spatial resolution of `126x126x126`.
 
 <p align="center">
   <img src="https://github.com/vasylivy/lbm3d-kokkos/blob/master/cavity3d/re100_128x128x128.png" width="275">

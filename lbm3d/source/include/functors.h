@@ -2,9 +2,14 @@
 #include <params.h>
 #include <math.h>
 
+template <typename T>
+KOKKOS_INLINE_FUNCTION T max(T x1, T x2) {
+  return (x1 > x2) ? x1 : x2;
+}
+
 struct collide_stream {
 
-  Params params;
+  const Params params;
   const Double tau = params.tau;
   const Double tau_inv = 1. / params.tau;
   const Double wo = 1. / 3.;
@@ -12,7 +17,7 @@ struct collide_stream {
   const Double wd = 1. / 36.;
   const Double omtau_inv = 1.0 - tau_inv;
 
-  DistributionField fA, fB;
+  const DistributionField fA, fB;
 
   collide_stream(DistributionField fB, DistributionField fA, Params params_) :
       fB(fB), fA(fA), params(params_) {
@@ -134,8 +139,7 @@ struct collide_stream {
 struct bb_left {
 
   const int j = 1;
-
-  DistributionField fB;
+  const DistributionField fB;
 
   bb_left(DistributionField fB) :
       fB(fB) {
@@ -156,8 +160,7 @@ struct bb_left {
 struct bb_right {
 
   const int j;
-
-  DistributionField fB;
+  const DistributionField fB;
 
   bb_right(DistributionField fB) :
       fB(fB), j(fB.extent(1) - 2) {
@@ -180,7 +183,7 @@ struct bb_bottom {
 
   const int i = 1;
 
-  DistributionField fB;
+  const DistributionField fB;
 
   bb_bottom(DistributionField fB) :
       fB(fB) {
@@ -205,8 +208,7 @@ struct bb_top {
   const Double u;
   const Double w;
   const int i;
-
-  DistributionField fB;
+  const DistributionField fB;
 
   bb_top(DistributionField fB, Params params_) :
       fB(fB), u(params_.lid_u), w(params_.lid_w), i(fB.extent(0) - 2) {
@@ -233,8 +235,7 @@ struct bb_top {
 struct bb_front {
 
   const int k;
-
-  DistributionField fB;
+  const DistributionField fB;
 
   bb_front(DistributionField fB) :
       fB(fB), k(fB.extent(2) - 2) {
@@ -256,8 +257,7 @@ struct bb_front {
 struct bb_back {
 
   const int k = 1;
-
-  DistributionField fB;
+  const DistributionField fB;
 
   bb_back(DistributionField fB) :
       fB(fB) {
@@ -278,9 +278,8 @@ struct bb_back {
 
 struct compute_macroscopic {
 
-  ScalarField u, v, w, rho;
-
-  DistributionField f;
+  const ScalarField u, v, w, rho;
+  const DistributionField f;
 
   compute_macroscopic(DistributionField f, ScalarField u, ScalarField v, ScalarField w, ScalarField rho) :
       f(f), u(u), v(v), w(w), rho(rho) {
@@ -330,10 +329,10 @@ struct compute_macroscopic {
 
 struct load_state {
 
-  ScalarField u, v, w, rho;
-  DistributionField fA, fB;
+  const ScalarField u, v, w, rho;
+  const DistributionField fA, fB;
 
-  Double weight[19] = { 1. / 3., 1. / 18, 1. / 18., 1. / 18., 1. / 18., 1. / 18., 1. / 18., 1. / 36., 1. / 36., 1. / 36., 1. / 36., 1. / 36., 1. / 36., 1.
+  const Double weight[19] = { 1. / 3., 1. / 18, 1. / 18., 1. / 18., 1. / 18., 1. / 18., 1. / 18., 1. / 36., 1. / 36., 1. / 36., 1. / 36., 1. / 36., 1. / 36., 1.
       / 36., 1. / 36., 1. / 36., 1. / 36., 1. / 36., 1. / 36. };
 
   load_state(DistributionField fA, DistributionField fB, ScalarField u, ScalarField v, ScalarField w, ScalarField rho) :
@@ -360,9 +359,8 @@ struct load_state {
 struct is_steady_state {
 
   const Double tol;
-
-  DistributionField fA;
-  ScalarField u, v, w, rho;
+  const DistributionField fA;
+  const ScalarField u, v, w, rho;
 
   is_steady_state(DistributionField fA, ScalarField u, ScalarField v, ScalarField w, ScalarField rho, const Double tol) :
       fA(fA), u(u), v(v), w(w), rho(rho), tol(tol) {
@@ -404,8 +402,10 @@ struct is_steady_state {
     Double wmom_B = w(i, j, k) * rho_B;
 
     // convergence criteria
-    converged = (fabs(umom_B - umom_A) < (tol * fabs(umom_A))) && (fabs(vmom_B - vmom_A) < (tol * fabs(vmom_A)))
-        && (fabs(wmom_B - wmom_A) < (tol * fabs(wmom_A)));
+    int converged_momu = fabs(umom_B - umom_A) < max(tol * fabs(umom_A), 1e-12);
+    int converged_momv = fabs(vmom_B - vmom_A) < max(tol * fabs(vmom_A), 1e-12);
+    int converged_momw = fabs(wmom_B - wmom_A) < max(tol * fabs(wmom_A), 1e-12);
+    converged &= converged_momu & converged_momv & converged_momw;
   }
 };
 

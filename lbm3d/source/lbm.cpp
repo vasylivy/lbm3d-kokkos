@@ -80,7 +80,7 @@ int main(int narg, char *arg[]) {
       fB = fC;
 
       // write to file
-      if ((step + 1) % params.output_rate == 0 || converged) {
+      if ((step + 1) % params.output_rate == 0) {
 
         printf("...output step = %i\n", step + 1);
 
@@ -102,14 +102,10 @@ int main(int narg, char *arg[]) {
     }
 
     double time = timer.seconds();
-
     double site_updates = double(nx - 2) * double(ny - 2) * double(nz - 2) * double(step) / (1000. * 1000.);
-
     double msus = site_updates / time;
-
     double bandwidth = msus * 1000. * 1000. * 2. * 19. * 8. / (1024. * 1024. * 1024.);
-
-    double cost = time / double(params.max_steps);
+    double cost = time / double(step);
 
     if (converged) {
       printf("Solution converged to steady state tolerance of %.3e\n", params.tol);
@@ -150,6 +146,7 @@ void update(DistributionField fB, DistributionField fA, ScalarField u, ScalarFie
 
     Kokkos::parallel_for("compute_macroscopic", range_3d( { 1, 1, 1 }, { D1 - 1, D2 - 1, D3 - 1 }), compute_macroscopic(fB, u, v, w, rho));
 
+    converged = 1;
     Kokkos::parallel_reduce("check_if_steady_state", range_3d( { 1, 1, 1 }, { D1 - 1, D2 - 1, D3 - 1 }), is_steady_state(fA, u, v, w, rho, params.tol),
         Kokkos::BAnd<int>(converged));
   }
