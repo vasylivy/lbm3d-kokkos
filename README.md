@@ -24,13 +24,7 @@ make -j
 The app will be compiled to the `release` directory as `lbm.host` or `lbm.cuda` depending on if it is an OpenMP or Cuda build.
 
 ## lattice Boltzmann method
-The LBM implementation uses the BGK collision operator, D3Q19 quadrature for velocity space, and half-way bounce back for the boundary conditions. The arrangement and numbering of the D3Q19 lattice is shown below.
-
-<p align="center">
-  <img src="https://github.com/vasylivy/lbm3d-kokkos/blob/master/D3Q19.png" width="275">
-</p>
-
-For collision-streaming, an A-B pattern is used. That is 19 distriubtions are read from array A, collided, and then streamed to array B. After applying boundary conditions, pointers to the arrays are then swapped. This collision-streaming pattern requires 2x the memory storage but is easy to implement. Details and further references regarding LBM can be found in Kruger's et al. text [[1]](https://link.springer.com/content/pdf/10.1007/978-3-319-44649-3.pdf).
+The LBM implementation uses the BGK collision operator, D3Q19 quadrature for velocity space, and half-way bounce back for the boundary conditions. For collision-streaming, an A-B pattern is used. That is 19 distriubtions are read from array A, collided, and then streamed to array B. After applying boundary conditions, pointers to the arrays are then swapped. This collision-streaming pattern requires 2x the memory storage but is easy to implement. Details and further references regarding LBM can be found in Kruger's et al. text [[1]](https://link.springer.com/content/pdf/10.1007/978-3-319-44649-3.pdf).
 
 ## Running the 3D lid driven cavity
 After compilation, execute the cmds
