@@ -27,7 +27,7 @@ For an OpenMP build, the app is `lbm.host`. Similarly, `lbm.cuda` for a Cuda bui
 
 Results can be plotted using `plot.py` as follows
 ```bash
-python3 ../scripts/plot.py "output" frame NX NY NZ umax cuda_flag reynolds "jiang_data.csv" "image_name"
+python3 ../scripts/plot.py "output" NX NY NZ umax cuda_flag reynolds "jiang_data.csv"
 ```
 The `cuda_flag` is a 1 or 0 that indicates whether to use column-major (Cuda/Fortran) or row-major (C/C++) data format.
 

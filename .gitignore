@@ -6,3 +6,5 @@
 lbm3d/KokkosCore_config.h
 *.bin
 *.swp
+*.pydevproject
+*.project
