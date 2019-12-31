@@ -43,7 +43,7 @@ The python scripts assumes the `output` for a desired Reynolds number has been m
 ## Validation
 As the name suggests, the lid driven cavity is an enclosed flow driven by the movement of a lid. Here, the lid velocity is set to only have the x-component. Below a critical Reynolds number, the flow is steady. Figures below compare the horizontal component of velocity at the vertical centerline for different Reynolds numbers (`Re = 100, 400, 1000`) against Jiang et al. (1994) least-square FEM results. The LBM simulations use a spatial resolution of `126x126x126`.
 <p align="center">
-  <img src="cavity3d/128x128x128.png" height="350">
+  <img src="cavity3d/128x128x128.png" height="450">
 </p>
 
 ## Performance
