@@ -36,17 +36,14 @@ cd lbm3d-kokkos/cavity3d
 The app outputs macroscopic variables to `cavity3d/output/` as `.bin` files based on the specified output rate until steady state is reached or the number of maximum steps is exceeded. To plot and compare the u velocity component to Jiang et al. results use the provided python script `scripts/plot.py`
 
 ```bash
-python3 ../scripts/plot.py "output" NX NY NZ umax cuda_flag reynolds "jiang_data.csv"
+python3 ../scripts/plot.py -reynolds 100 400 1000 -nx 128 -ny 128 -nz 128 -umax 0.1
 ```
-The `cuda_flag` is a 1 or 0 that indicates whether to use column-major (Cuda/Fortran) or row-major (C/C++) data format.
+The python scripts assumes the `output` for a desired Reynolds number has been moved to its own directory. For `Re=100` with a domain size of `128x128x128`, the output should be moved to a directory `re100_128x128x128`. By default, a row major (C/C++) data format is assumed. An optional `-cuda 1` flag can be passed to specify column-major (Cuda/Fortran) data format.
 
 ## Validation
 As the name suggests, the lid driven cavity is an enclosed flow driven by the movement of a lid. Here, the lid velocity is set to only have the x-component. Below a critical Reynolds number, the flow is steady. Figures below compare the horizontal component of velocity at the vertical centerline for different Reynolds numbers (`Re = 100, 400, 1000`) against Jiang et al. (1994) least-square FEM results. The LBM simulations use a spatial resolution of `126x126x126`.
-
 <p align="center">
-  <img src="https://github.com/vasylivy/lbm3d-kokkos/blob/master/cavity3d/re100_128x128x128.png" width="275">
-  <img src="https://github.com/vasylivy/lbm3d-kokkos/blob/master/cavity3d/re400_128x128x128.png" width="275">
-  <img src="https://github.com/vasylivy/lbm3d-kokkos/blob/master/cavity3d/re1000_128x128x128.png" width="275">
+  <img src="cavity3d/128x128x128.png" height="350">
 </p>
 
 ## Performance
