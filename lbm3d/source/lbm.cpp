@@ -62,7 +62,7 @@ int main(int narg, char *arg[]) {
     o->frame += 1;
 
     printf("Solving lid driven cavity (Re = %.2e, tau = %.2e, [%i x %i x %i] , RAM (MB) = %.1f...\n", params.re, params.tau, nx - 2, ny - 2, nz - 2,
-        double(nx) * double(ny) * double(nz) * 8. * (2. * 19. + 3.) / (1024. * 1024.));
+        double(nx) * double(ny) * double(nz) * 8. * (2. * 19. + 4.) / (1024. * 1024.));
 
     int converged = 0;
     int step = 0;

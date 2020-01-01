@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import sys
 import glob
 import argparse
 
@@ -33,7 +32,7 @@ parser.add_argument(
  
 parser.add_argument(
         "-cuda",
-        type=float,
+        type=int,
         default=0,
     )
  
